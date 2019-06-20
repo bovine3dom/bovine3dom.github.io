@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Tags on The Blanthorn Blog</title>
-    <link>https://bovine3dom.github.io/tags/</link>
-    <description>Recent content in Tags on The Blanthorn Blog</description>
+    <title>Tags on Oliver Blanthorn</title>
+    <link>https://o.blanthorn.com/tags/</link>
+    <description>Recent content in Tags on Oliver Blanthorn</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-GB</language>
-    <copyright>&lt;img class=&#34;logo-manchester&#34; src=&#34;https://bovine3dom.github.io/images/TAB_black.svg&#34; style=&#34;height:4rem&#34;&gt; &lt;br&gt; Made using &lt;a href=&#34;https://github.com/bovine3dom/hucore.git&#34; target=&#34;_blank&#34;&gt;Hucore theme&lt;/a&gt; &amp; &lt;a href=&#34;http://gohugo.io&#34; target=&#34;_blank&#34;&gt;Hugo&lt;/a&gt; </copyright>
+    <copyright>&lt;img class=&#34;logo-manchester&#34; src=&#34;https://o.blanthorn.com/images/TAB_black.svg&#34; style=&#34;height:4rem&#34;&gt; &lt;br&gt; Made using &lt;a href=&#34;https://github.com/bovine3dom/hucore.git&#34; target=&#34;_blank&#34;&gt;Hucore theme&lt;/a&gt; &amp; &lt;a href=&#34;http://gohugo.io&#34; target=&#34;_blank&#34;&gt;Hugo&lt;/a&gt; </copyright>
     
-	<atom:link href="https://bovine3dom.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://o.blanthorn.com/tags/index.xml" rel="self" type="application/rss+xml" />
     
     
   </channel>
