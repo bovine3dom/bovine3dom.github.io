@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta content="Blanthorn, Julia, Tridactyl" name="keywords">
+<meta content="Oliver Blanthorn" name="author">
+<meta property="og:title" content="Remotely Working - Oliver Blanthorn">
+<meta property="og:url" content="https://o.blanthorn.com/blog/2018/09/11/remotely-working/">
+<meta property="og:description" content="I should build a website.">
+<meta property="og:type" content="website" />
+<title>Remotely Working | Oliver Blanthorn</title>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+<link rel="stylesheet" href="https://o.blanthorn.com/css/style.css">
+<link rel="shortcut icon" href="https://o.blanthorn.com/favicon.ico">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/styles/github.min.css">
+
+</head>
+
+<body>
+<section class="section">
+  <div class="container">
+    <nav class="nav">
+      <div class="nav-left">
+        <a class="nav-item" href="https://o.blanthorn.com"><h1 class="title is-4">Oliver Blanthorn</h1></a>
+      <nav class="nav-item level is-mobile">
+          
+          <a class="level-item" href="/about/">
+            about
+          </a>
+          
+        </nav>
+      </div>
+      <div class="nav-right">
+        <nav class="nav-item level is-mobile">
+          
+          <a class="level-item" href="https://github.com/bovine3dom" target="_blank">
+            <span class="icon">
+              <i class="fa fa-github"></i>
+            </span>
+          </a>
+          
+          <a class="level-item" href="http://orcid.org/0000-0002-1324-128X" target="_blank">
+            <span class="icon">
+              <i class="fa fa-id-card-o"></i>
+            </span>
+          </a>
+          
+          <a class="level-item" href="https://scholar.google.co.uk/citations?user=6W4LhPgAAAAJ" target="_blank">
+            <span class="icon">
+              <i class="fa fa-graduation-cap"></i>
+            </span>
+          </a>
+          
+          <a class="level-item" href="/index.xml" target="_blank">
+            <span class="icon">
+              <i class="fa fa-rss"></i>
+            </span>
+          </a>
+          
+        </nav>
+      </div>
+    </nav>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <h1 class="title">Remotely Working</h1>
+    <h2 class="subtitle is-5">September 11, 2018 by Oliver Blanthorn</h2>
+    
+    <div class="content">
+      <p>I really love the freedom that remote working gives me. I can work whenever and wherever the feeling takes me.</p>
+
+<p>However, I often need to run complex simulations that take a lot of grunt. I don&rsquo;t want to lug a heavy laptop around with me all day, so my desk at work is usefully employed to provide a desktop computer.</p>
+
+<p>Then, my workflow is thus:</p>
+
+<ul>
+<li>SSH into work machine / MOSH if I&rsquo;m on a train</li>
+<li>Use tmux in work machine to handle long-running code &amp; deal with patchy WiFi</li>
+<li>Jupyter for bulk of visualisation / coding</li>
+</ul>
+
+<p>I&rsquo;ll go into the vagaries of each in detail; I&rsquo;ll probably update this post often as I think of new things to add.</p>
+
+<h1 id="ssh">SSH</h1>
+
+<p><code>SSH</code> is a fantastic multi-tool for remote working. Almost anything you can do at the remote machine you can do over SSH in a much more programmable and, honestly, sane fashion than you may have experienced with Windows Remote Desktop. <code>mosh</code> is very similar to SSH but works better on patchier connections. Unfortunately, by its nature, <code>mosh</code> can&rsquo;t support the port forwards that I go on to detail in this section, so I generally use <code>ssh</code>.</p>
+
+<h2 id="socks-proxy-vpn-alternative">SOCKS proxy (VPN alternative)</h2>
+
+<p>Some universities and employers require you to be on their network to access certain web pages (in my case, journals).</p>
+
+<p>They usually suggest you do this by connecting to their own proprietary VPN which routes all of your traffic through their servers. This is a nightmare for privacy, but, more importantly, for performance&mdash;browsing the web feels like treacle.</p>
+
+<p>The trick is to only use your benefactor&rsquo;s network for the pages where you really need it. This is most easily done with a SOCKS proxy and an extension for your browser. I use <a href="https://addons.mozilla.org/en-GB/firefox/addon/foxyproxy-standard/">FoxyProxy</a>.</p>
+
+<pre><code>ssh -D8080 your.pc.com
+
+# Or, in ~/.ssh/config
+
+Host your_alias
+    HostName        your.pc.com
+    DynamicForward  8080 
+</code></pre>
+
+<h2 id="port-forwarding-for-jupyter">Port forwarding for Jupyter</h2>
+
+<p>Using port forwarding lets you easily use Jupyter on your remote machine from your local device. Simply connect to your machine using the invocation below, start Jupyter on the remote machine (under tmux, for example) if it isn&rsquo;t already running, and then navigate to <a href="https://localhost:8888">https://localhost:8888</a> on your local machine.</p>
+
+<pre><code>ssh -L8888:localhost:8888 your.pc.com
+
+# Or, in ~/.ssh/config
+
+Host your_alias
+    HostName        your.pc.com
+    LocalForward    8888 localhost:8888
+</code></pre>
+
+<h1 id="tmux">tmux</h1>
+
+<p><code>tmux</code> is a multi-window terminal multiplexer (i.e. it lets you run multiple processes in a single terminal).</p>
+
+<p>I particularly love it for:</p>
+
+<ul>
+<li><a href="https://github.com/bovine3dom/dotfiles/blob/198175dbd49c9f432522cf3223052a6738dc1527/.tmux.conf#L27">vi bindings</a></li>
+<li>multi-window (tiling window manager) within the remote machine without X forwarding - uses very little data.</li>
+<li>long lived sessions: wifi disconnect doesn&rsquo;t mean losing your work</li>
+</ul>
+
+<p>With Julia&rsquo;s long start-up and compile times, a long-lived session is a must. I typically run Jupyter for hundreds of days at a time.</p>
+
+<h1 id="jupyter">Jupyter</h1>
+
+<p>When I migrated from MATLAB to Python, I really missed the way the MATLAB environment encourages experimentation. For me, Jupyter does all of that and more; I find it much easier to reproduce results with Jupyter as the code I&rsquo;ve run is saved for posterity unless I go out of my way to delete it. One does have to exercise some self-discipline when re-running cells or running them in a strange order. In practice, I find it works fine, although I know many people are concerned about how careless use of cells can hurt reproducibility.</p>
+
+<h1 id="thin-client">&ldquo;Thin&rdquo; client</h1>
+
+<p>I use an old Thinkpad X220. It has a pretty low resolution display, so I use a bitmap font, the excellent <a href="https://www.donationcoder.com/Software/Jibz/Dina/">Dina</a>, for sharpness<sup class="footnote-ref" id="fnref:HiDPI-bitmaps"><a href="#fn:HiDPI-bitmaps">1</a></sup>. If anybody knows of a laptop that has a high resolution display, a pointing stick, and a scissor-switch keyboard, please let me know. My current long-term plan for when the X220 dies (and purchasing more on eBay becomes impractical) is to use a <a href="linkme">TeX Yoda</a> or old IBM server keyboard with a high-res tablet&mdash;but I&rsquo;m concerned that it wouldn&rsquo;t be very lap friendly.</p>
+
+<!-- NB: not actually this one-->
+<div class="footnotes">
+
+<hr />
+
+<ol>
+<li id="fn:HiDPI-bitmaps">If anyone has any recommendations for bitmap fonts to use on HiDPI displays, I&rsquo;m all ears. I&rsquo;ve heard good things about <a href="https://github.com/rbanffy/3270font">x3270</a> but haven&rsquo;t got around to trying it yet. I&rsquo;m currently trying out <a href="https://github.com/be5invis/Iosevka/releases">Iosevka</a>, in the hope that I can get the ligatures to work; Fira Code has nicer ligatures but I can&rsquo;t get along with the rest of it. I&rsquo;m not yet convinced about the density of Iosevka. <!-- Todo: try out Iosevka in mlterm... hyper.js? eugh; consider going back to consolas?--> I might try peep out. Iosevka: need to use &ldquo;default&rdquo; character variants; the consolas style one has a funny @ sign.
+ <a class="footnote-return" href="#fnref:HiDPI-bitmaps"><sup>[return]</sup></a></li>
+</ol>
+</div>
+    </div>
+    
+  </div>
+</section>
+
+
+<section class="section">
+  <div class="container has-text-centered">
+    <p><img class="logo-manchester" src="/images/TAB_black.svg" style="height:4rem"> <br> Made using <a href="https://github.com/bovine3dom/hucore.git" target="_blank">Hucore theme</a> & <a href="http://gohugo.io" target="_blank">Hugo</a> </p>
+  </div>
+</section>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.11.0/highlight.min.js" integrity="sha256-+bhVTaRmJ/c07eV80nU8gD2cBBF0rYkf1txqXlrbvb0=" crossorigin="anonymous"></script>
+
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.11.0/languages/julia.min.js"></script>
+
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.11.0/languages/python.min.js"></script>
+
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+</body>
