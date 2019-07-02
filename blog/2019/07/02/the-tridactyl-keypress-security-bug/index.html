@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta content="Blanthorn, Julia, Tridactyl" name="keywords">
+<meta content="Oliver Blanthorn" name="author">
+<meta property="og:title" content="The Tridactyl Keypress Security Bug - Oliver Blanthorn">
+<meta property="og:url" content="https://o.blanthorn.com/blog/2019/07/02/the-tridactyl-keypress-security-bug/">
+<meta property="og:description" content="I should build a website.">
+<meta property="og:type" content="website" />
+<title>The Tridactyl Keypress Security Bug | Oliver Blanthorn</title>
+
+
+
+<link rel="stylesheet" href="https://o.blanthorn.com/css/style.css">
+<link rel="shortcut icon" href="https://o.blanthorn.com/favicon.ico">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/styles/github.min.css">
+
+</head>
+
+<body>
+<section class="section">
+  <div class="container">
+    <nav class="nav">
+      <div class="nav-left">
+        <a class="nav-item" href="https://o.blanthorn.com"><h1 class="title is-4">Oliver Blanthorn</h1></a>
+      <nav class="nav-item level is-mobile">
+          
+          <a class="level-item" href="/about/">
+            about
+          </a>
+          
+        </nav>
+      </div>
+      <div class="nav-right">
+        <nav class="nav-item level is-mobile">
+          
+          <a class="level-item" href="https://github.com/bovine3dom" target="_blank">
+            <span class="icon">
+              <i class="fa fa-github"></i>
+            </span>
+          </a>
+          
+          <a class="level-item" href="http://orcid.org/0000-0002-1324-128X" target="_blank">
+            <span class="icon">
+              <i class="fa fa-id-card-o"></i>
+            </span>
+          </a>
+          
+          <a class="level-item" href="https://scholar.google.co.uk/citations?user=6W4LhPgAAAAJ" target="_blank">
+            <span class="icon">
+              <i class="fa fa-graduation-cap"></i>
+            </span>
+          </a>
+          
+          <a class="level-item" href="/index.xml" target="_blank">
+            <span class="icon">
+              <i class="fa fa-rss"></i>
+            </span>
+          </a>
+          
+        </nav>
+      </div>
+    </nav>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <h1 class="title">The Tridactyl Keypress Security Bug</h1>
+    <h2 class="subtitle is-5">July 2, 2019 by Oliver Blanthorn</h2>
+    
+    <div class="content">
+      <p>What follows is a wordier write-up of Tridactyl&rsquo;s first real brush with (in)security from my personal perspective. If you&rsquo;re purely interested in the mitigations, head to the <a href="https:///github.com/tridactyl/tridactyl">GitHub repository</a>&mdash;or just update Tridactyl to version 1.16.1 or 1.14.13 by going to <code>about:addons</code> in Firefox, right-clicking Tridactyl&rsquo;s listing, and clicking &ldquo;Find Updates&rdquo;. Once it has downloaded (it will look like it&rsquo;s hanging&mdash;it isn&rsquo;t), restart Firefox and you&rsquo;re done. At the time of writing, <a href="https://addons.mozilla.org/en-US/firefox/addon/tridactyl-vim/statistics/usage/versions/?last=30">about 60% of users have a patched version</a>. <!-- make this point to the corresponding issue --></p>
+
+<hr />
+
+<p>On the morning of Friday, 14th June, 2019, a user came into Tridactyl&rsquo;s <a href="https://riot.im/app/#/room/#tridactyl:matrix.org">Riot.im</a> chat room and asked:</p>
+
+<blockquote>
+<p>can someone ELI5 - what&rsquo;s stopping a webpage from intracting with tridactyl? eg. sending keypress events to the command line</p>
+</blockquote>
+
+<p>It was quite a reasonable question. For those not in the know, Tridactyl is a Firefox extension which makes it all a little bit more like Vim. Importantly, it allows you to automate many actions&mdash;from &ldquo;open this link in a new tab&rdquo; and &ldquo;open the current page in <code>mpv</code>&rdquo; to &ldquo;shutdown my computer if I visit <code>emacs.org</code>&rdquo;&mdash;which you wouldn&rsquo;t want any web page you visit to be able to trigger.</p>
+
+<p>glacambre, another Tridactyl developer, quickly responded with the simple design cmcaine came up with in the first days of Tridactyl:</p>
+
+<blockquote>
+<p>The webpage can emit keypress events for Tridactyl but the <code>isTrusted</code> attribute of said events will be set to false while user-generated events have them set to <code>true</code>. That&rsquo;s what Tridactyl uses in order to know what the keypress events it should register.</p>
+</blockquote>
+
+<p>Publicly, this was the end of the matter&mdash;a good question answered authoritatively. It&rsquo;s what we&rsquo;ve come to expect from glacambre.</p>
+
+<hr />
+
+<p>Two hours later, glacambre posted a pretty sober message in our private &ldquo;devs&rdquo;<sup class="footnote-ref" id="fnref:devs"><a href="#fn:devs">1</a></sup> team on GitHub.</p>
+
+<blockquote>
+<h1 id="istrusted-value-isn-t-checked-anymore">isTrusted value isn&rsquo;t checked anymore</h1>
+
+<p>Tridactyl started checking for the isTrusted attribute of key events in</p>
+
+<p><a href="https://github.com/tridactyl/tridactyl/commit/48cedc058bb09b2a8ad898d8caa3455adc510b1e">48cedc058bb09b2a8ad898d8caa3455adc510b1e</a>.</p>
+
+<p><a href="https://github.com/tridactyl/tridactyl/pull/962/commits/d1e6a8653913a15b132f11c7731ca3a1c1bd41d6">d1e6a8653913a15b132f11c7731ca3a1c1bd41d6</a>
+removed that code but didn&rsquo;t re-add this check anywhere. So we might currently be vulnerable to pages generating events and interacting with the command line (I haven&rsquo;t checked yet).</p>
+</blockquote>
+
+<p>Yep&mdash;the key security property that was protecting Tridactylys<sup class="footnote-ref" id="fnref:dem"><a href="#fn:dem">2</a></sup> from nefarious websites <em>just wasn&rsquo;t there</em>. I&rsquo;ve no idea why glacambre decided to check whether this was in the code. I <em>knew</em> it was there; there&rsquo;s no way I would have bothered to look.</p>
+
+<p>I replied with my characteristic composure:</p>
+
+<blockquote>
+<p>F*** me</p>
+
+<p>Once we get this sorted it would be nice to have an e2e test that checks for this vulnerability.</p>
+</blockquote>
+
+<p>The bug was introduced in <a href="https://github.com/tridactyl/tridactyl/pull/962">September 2018</a>&mdash;merged by me&mdash;and persisted until June 2019. This was, and is, embarrassing.</p>
+
+<p>Any website could send keypresses to Tridactyl and Tridactyl would merrily run them as if the user had pressed them. This is quite terrifying for users who have our <code>native messenger</code> installed which allows you to execute anything you want in your shell; our fear was that, now, any website you visited would have that same pleasure.</p>
+
+<h1 id="mitigation">Mitigation</h1>
+
+<p>It was very simple to reinstate the checks; cmcaine committed an initial fix at 10AM on the day we found the issue and released 1.16.0 within hours. cmcaine and I manually built and backported the patch to the 1.14.x release by Saturday. We did this pretty much immediately before concerning ourselves with what the impact of the bug might be.</p>
+
+<p>For fear of alerting nefarious individuals, we kept the patch secret until approximately 50% of Tridactyl users had it. We then kept the patch secret for a bit longer because I was in the middle of moving to a new flat and I wanted to be available at the time of disclosure to answer people&rsquo;s questions.</p>
+
+<h2 id="addons-mozilla-org-amo">addons.mozilla.org (AMO)</h2>
+
+<p>The AMO makes backporting a much bigger pain than it needs to be. Firstly, its versioning system assumes that <code>x.x.x &lt; y.y.y.y for all x,y</code> (which we only found out from trial and error). Secondly, if you are rapidly signing releases&mdash;as one probably is if one is backporting to multiple releases at once&mdash;the AMO will irreversibly disable any versions which were in its reviewing queue. Finally, the AMO reports the most recently-updated version as the &ldquo;latest version&rdquo; on your own page, and the &ldquo;add to Firefox&rdquo; button defaults to that, meaning people can install an &lsquo;old&rsquo; version and then as soon as they restart their browser get hit with a scary permission prompt asking for all the new permissions the real latest version requires.</p>
+
+<p>I think the documentation could really benefit from a page that says &ldquo;you found a security bug: what next?&ldquo;. It really gave us some extra headaches that we could have done without. Backporting is a niche use-case on the AMO, but when it matters, it really matters.</p>
+
+<p>We disabled all affected Tridactyl versions and deleted them from our buildbot.</p>
+
+<h1 id="investigation">Investigation</h1>
+
+<p>There&rsquo;s a famous adage in the airline industry that goes something like this:</p>
+
+<blockquote>
+<p>I&rsquo;ve never seen a plane crash where there was a single root-cause. Usually, 9 or 10 things went wrong and if any one of those things hadn&rsquo;t gone wrong, the plane would have been fine.</p>
+</blockquote>
+
+<p>For us, a whole host of things actually <em>went right</em>, which greatly limited the damage the bug could have done&mdash;and perhaps explains why no-one had complained to us about their bank details or SSH keys being stolen.</p>
+
+<h2 id="what-went-wrong">What went wrong</h2>
+
+<ul>
+<li><p>I didn&rsquo;t review a large PR thoroughly enough</p></li>
+
+<li><p>One of our developers missed a comment that said <code>// Ignore JS-generated events for security reasons.</code></p></li>
+
+<li><p>Our <code>mpv</code> hint-mode default bind <code>;v</code> ran <code>mpv [href you selected]</code> in a shell but didn&rsquo;t escape the <code>href</code>s it was fed, so characters which were not escaped by URL-encoding, e.g. <code>|</code>, could be used to start new shell commands.</p></li>
+
+<li><p>Our tests didn&rsquo;t (and don&rsquo;t) check that our key security assumptions are valid</p></li>
+</ul>
+
+<h2 id="what-went-right">What went right</h2>
+
+<ul>
+<li><p>our command line lives in an <code>iframe</code> &mdash;so no website could execute arbitrary ex-commands</p></li>
+
+<li><p><code>href</code>s are percent-encoded which makes it much harder to give arguments to any shell-command.</p></li>
+</ul>
+
+<h2 id="overall-impact">Overall impact</h2>
+
+<ul>
+<li><p>Any website could trigger binds outside of our command line for nuisance attacks - adding bookmarks, closing Firefox, etc.</p>
+
+<ul>
+<li>It would be hard for a website to trigger any non-default binds as it would have no way of knowing which those were without just trying them all, which would cause obvious side-effects on the page.</li>
+</ul></li>
+
+<li><p>If the native messenger was installed, shell commands (without any arguments, to the best of our knowledge) could be executed.</p>
+
+<ul>
+<li>Very creative attacks piping the output of <code>mpv</code> into another command could be possible but would require some amount of thought. We&rsquo;ve spent some time trying to craft attacks but haven&rsquo;t managed it yet.</li>
+</ul></li>
+</ul>
+
+<p>For clarity: if you have the native messenger installed and you are on an unpatched version, it is possible that any website could execute commands with arguments in your shell. If you read any of the above and thought &ldquo;ah, nevermind, it&rsquo;s just a minor issue, I don&rsquo;t need to update&rdquo;, I would politely urge you to reconsider.</p>
+
+<h1 id="prevention">Prevention</h1>
+
+<p>This bug was really embarrassing and potentially quite dangerous, so we&rsquo;d really like to prevent them from happening again. Our plan is thus:</p>
+
+<ul>
+<li><p>Require two people to review any large PRs</p></li>
+
+<li><p>Try to persuade our contributors to submit smaller PRs</p></li>
+
+<li><p>Include automated tests for as many of our key security properties as we can manage</p></li>
+</ul>
+
+<p>The first point&mdash;having more eyes on the code&mdash;is something that everyone reading this post could help with. The majority of our pull requests are quite small and could be reviewed in only a few minutes of your time. Just click the &ldquo;watch&rdquo; button on the repository and occasionally pop in and send us your thoughts on whatever we&rsquo;re doing. I would encourage anyone horrified by this bug to get involved.</p>
+
+<h1 id="disclosure">Disclosure</h1>
+
+<p>You&rsquo;re reading it! :)</p>
+
+<p>Please tell your Tridactyl-using friends to update to version 1.16.0+ or 1.14.13+. All other Tridactyl 1.14.x and 1.15.x are affected. Tridactyl 1.13.x and lower are not affected.</p>
+
+<h1 id="acknowledgements">Acknowledgements</h1>
+
+<ul>
+<li><p>Hat-tip to skeeto on <a href="https://www.reddit.com/r/firefox/comments/c1afp3/is_this_a_legitimate_tridactyl_update/">Reddit</a> for noticing our slightly dodgy flurry of backports for Firefox ESR. Thanks for sounding the alarm and then keeping the reason for the subterfuge quiet when I sheepishly explained and asked!</p></li>
+
+<li><p>Thanks to The Compiler of Qutebrowser fame for giving us some sound advice on how to disclose the vulnerability when we asked for it.</p></li>
+
+<li><p>I&rsquo;m very grateful to all of the Tridactyl developers for coming together to work out how serious this bug was and mitigate it.</p></li>
+
+<li><p>Thanks to cmcaine for proof-reading this post.</p></li>
+
+<li><p>Finally, we must thank swalladge for asking the question in the first place!</p></li>
+</ul>
+<div class="footnotes">
+
+<hr />
+
+<ol>
+<li id="fn:devs">We have an excellent logo for the developer team which is exclusively visible to them. If this isn&rsquo;t incentive enough to make the 80 or so commits it takes to join the team, I don&rsquo;t know what is.
+ <a class="footnote-return" href="#fnref:devs"><sup>[return]</sup></a></li>
+<li id="fn:dem">This is the demonym(?) for people who use Tridactyl, I think. Disclaimer: most of my knowledge of Greek comes from symbols I badly scrawled in the name of Physics.
+ <a class="footnote-return" href="#fnref:dem"><sup>[return]</sup></a></li>
+</ol>
+</div>
+    </div>
+    
+  </div>
+</section>
+
+
+<section class="section">
+  <div class="container has-text-centered">
+    <p><img class="logo-manchester" src="/images/TAB_black.svg" style="height:4rem"> <br> Made using <a href="https://github.com/bovine3dom/hucore.git" target="_blank">Hucore theme</a> & <a href="http://gohugo.io" target="_blank">Hugo</a> </p>
+  </div>
+</section>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.11.0/highlight.min.js" integrity="sha256-+bhVTaRmJ/c07eV80nU8gD2cBBF0rYkf1txqXlrbvb0=" crossorigin="anonymous"></script>
+
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.11.0/languages/julia.min.js"></script>
+
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.11.0/languages/python.min.js"></script>
+
+
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+</body>

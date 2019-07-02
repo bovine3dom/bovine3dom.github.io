@@ -7,10 +7,19 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-GB</language>
     <copyright>&lt;img class=&#34;logo-manchester&#34; src=&#34;https://o.blanthorn.com/images/TAB_black.svg&#34; style=&#34;height:4rem&#34;&gt; &lt;br&gt; Made using &lt;a href=&#34;https://github.com/bovine3dom/hucore.git&#34; target=&#34;_blank&#34;&gt;Hucore theme&lt;/a&gt; &amp; &lt;a href=&#34;http://gohugo.io&#34; target=&#34;_blank&#34;&gt;Hugo&lt;/a&gt; </copyright>
-    <lastBuildDate>Tue, 11 Sep 2018 11:22:30 +0100</lastBuildDate>
+    <lastBuildDate>Tue, 02 Jul 2019 17:00:00 +0100</lastBuildDate>
     
 	<atom:link href="https://o.blanthorn.com/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>The Tridactyl Keypress Security Bug</title>
+      <link>https://o.blanthorn.com/blog/2019/07/02/the-tridactyl-keypress-security-bug/</link>
+      <pubDate>Tue, 02 Jul 2019 17:00:00 +0100</pubDate>
+      
+      <guid>https://o.blanthorn.com/blog/2019/07/02/the-tridactyl-keypress-security-bug/</guid>
+      <description>&lt;p&gt;What follows is a wordier write-up of Tridactyl&amp;rsquo;s first real brush with (in)security from my personal perspective. If you&amp;rsquo;re purely interested in the mitigations, head to the &lt;a href=&#34;https:///github.com/tridactyl/tridactyl&#34;&gt;GitHub repository&lt;/a&gt;&amp;mdash;or just update Tridactyl to version 1.16.1 or 1.14.13 by going to &lt;code&gt;about:addons&lt;/code&gt; in Firefox, right-clicking Tridactyl&amp;rsquo;s listing, and clicking &amp;ldquo;Find Updates&amp;rdquo;. Once it has downloaded (it will look like it&amp;rsquo;s hanging&amp;mdash;it isn&amp;rsquo;t), restart Firefox and you&amp;rsquo;re done. At the time of writing, &lt;a href=&#34;https://addons.mozilla.org/en-US/firefox/addon/tridactyl-vim/statistics/usage/versions/?last=30&#34;&gt;about 60% of users have a patched version&lt;/a&gt;. &lt;!-- make this point to the corresponding issue --&gt;&lt;/p&gt;</description>
+    </item>
     
     <item>
       <title>Remotely Working</title>
