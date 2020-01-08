@@ -75,31 +75,20 @@
     
     <div class="content">
       <p>I really love the freedom that remote working gives me. I can work whenever and wherever the feeling takes me.</p>
-
-<p>However, I often need to run complex simulations that take a lot of grunt. I don&rsquo;t want to lug a heavy laptop around with me all day, so my desk at work is usefully employed to provide a desktop computer.</p>
-
+<p>However, I often need to run complex simulations that take a lot of grunt. I don't want to lug a heavy laptop around with me all day, so my desk at work is usefully employed to provide a desktop computer.</p>
 <p>Then, my workflow is thus:</p>
-
 <ul>
-<li>SSH into work machine / MOSH if I&rsquo;m on a train</li>
+<li>SSH into work machine / MOSH if I'm on a train</li>
 <li>Use tmux in work machine to handle long-running code &amp; deal with patchy WiFi</li>
 <li>Jupyter for bulk of visualisation / coding</li>
 </ul>
-
-<p>I&rsquo;ll go into the vagaries of each in detail; I&rsquo;ll probably update this post often as I think of new things to add.</p>
-
+<p>I'll go into the vagaries of each in detail; I'll probably update this post often as I think of new things to add.</p>
 <h1 id="ssh">SSH</h1>
-
-<p><code>SSH</code> is a fantastic multi-tool for remote working. Almost anything you can do at the remote machine you can do over SSH in a much more programmable and, honestly, sane fashion than you may have experienced with Windows Remote Desktop. <code>mosh</code> is very similar to SSH but works better on patchier connections. Unfortunately, by its nature, <code>mosh</code> can&rsquo;t support the port forwards that I go on to detail in this section, so I generally use <code>ssh</code>.</p>
-
+<p><code>SSH</code> is a fantastic multi-tool for remote working. Almost anything you can do at the remote machine you can do over SSH in a much more programmable and, honestly, sane fashion than you may have experienced with Windows Remote Desktop. <code>mosh</code> is very similar to SSH but works better on patchier connections. Unfortunately, by its nature, <code>mosh</code> can't support the port forwards that I go on to detail in this section, so I generally use <code>ssh</code>.</p>
 <h2 id="socks-proxy-vpn-alternative">SOCKS proxy (VPN alternative)</h2>
-
 <p>Some universities and employers require you to be on their network to access certain web pages (in my case, journals).</p>
-
 <p>They usually suggest you do this by connecting to their own proprietary VPN which routes all of your traffic through their servers. This is a nightmare for privacy, but, more importantly, for performance&mdash;browsing the web feels like treacle.</p>
-
-<p>The trick is to only use your benefactor&rsquo;s network for the pages where you really need it. This is most easily done with a SOCKS proxy and an extension for your browser. I use <a href="https://addons.mozilla.org/en-GB/firefox/addon/foxyproxy-standard/">FoxyProxy</a>.</p>
-
+<p>The trick is to only use your benefactor's network for the pages where you really need it. This is most easily done with a SOCKS proxy and an extension for your browser. I use <a href="https://addons.mozilla.org/en-GB/firefox/addon/foxyproxy-standard/">FoxyProxy</a>.</p>
 <pre><code>ssh -D8080 your.pc.com
 
 # Or, in ~/.ssh/config
@@ -107,12 +96,8 @@
 Host your_alias
     HostName        your.pc.com
     DynamicForward  8080 
-</code></pre>
-
-<h2 id="port-forwarding-for-jupyter">Port forwarding for Jupyter</h2>
-
-<p>Using port forwarding lets you easily use Jupyter on your remote machine from your local device. Simply connect to your machine using the invocation below, start Jupyter on the remote machine (under tmux, for example) if it isn&rsquo;t already running, and then navigate to <a href="https://localhost:8888">https://localhost:8888</a> on your local machine.</p>
-
+</code></pre><h2 id="port-forwarding-for-jupyter">Port forwarding for Jupyter</h2>
+<p>Using port forwarding lets you easily use Jupyter on your remote machine from your local device. Simply connect to your machine using the invocation below, start Jupyter on the remote machine (under tmux, for example) if it isn't already running, and then navigate to https://localhost:8888 on your local machine.</p>
 <pre><code>ssh -L8888:localhost:8888 your.pc.com
 
 # Or, in ~/.ssh/config
@@ -120,40 +105,28 @@ Host your_alias
 Host your_alias
     HostName        your.pc.com
     LocalForward    8888 localhost:8888
-</code></pre>
-
-<h1 id="tmux">tmux</h1>
-
+</code></pre><h1 id="tmux">tmux</h1>
 <p><code>tmux</code> is a multi-window terminal multiplexer (i.e. it lets you run multiple processes in a single terminal).</p>
-
 <p>I particularly love it for:</p>
-
 <ul>
 <li><a href="https://github.com/bovine3dom/dotfiles/blob/198175dbd49c9f432522cf3223052a6738dc1527/.tmux.conf#L27">vi bindings</a></li>
 <li>multi-window (tiling window manager) within the remote machine without X forwarding - uses very little data.</li>
-<li>long lived sessions: wifi disconnect doesn&rsquo;t mean losing your work</li>
+<li>long lived sessions: wifi disconnect doesn't mean losing your work</li>
 </ul>
-
-<p>With Julia&rsquo;s long start-up and compile times, a long-lived session is a must. I typically run Jupyter for hundreds of days at a time.</p>
-
+<p>With Julia's long start-up and compile times, a long-lived session is a must. I typically run Jupyter for hundreds of days at a time.</p>
 <h1 id="jupyter">Jupyter</h1>
-
-<p>When I migrated from MATLAB to Python, I really missed the way the MATLAB environment encourages experimentation. For me, Jupyter does all of that and more; I find it much easier to reproduce results with Jupyter as the code I&rsquo;ve run is saved for posterity unless I go out of my way to delete it. One does have to exercise some self-discipline when re-running cells or running them in a strange order. In practice, I find it works fine, although I know many people are concerned about how careless use of cells can hurt reproducibility.</p>
-
+<p>When I migrated from MATLAB to Python, I really missed the way the MATLAB environment encourages experimentation. For me, Jupyter does all of that and more; I find it much easier to reproduce results with Jupyter as the code I've run is saved for posterity unless I go out of my way to delete it. One does have to exercise some self-discipline when re-running cells or running them in a strange order. In practice, I find it works fine, although I know many people are concerned about how careless use of cells can hurt reproducibility.</p>
 <h1 id="thin-client">&ldquo;Thin&rdquo; client</h1>
-
-<p>I use an old Thinkpad X220. It has a pretty low resolution display, so I use a bitmap font, the excellent <a href="https://www.donationcoder.com/Software/Jibz/Dina/">Dina</a>, for sharpness<sup class="footnote-ref" id="fnref:HiDPI-bitmaps"><a href="#fn:HiDPI-bitmaps">1</a></sup>. If anybody knows of a laptop that has a high resolution display, a pointing stick, and a scissor-switch keyboard, please let me know. My current long-term plan for when the X220 dies (and purchasing more on eBay becomes impractical) is to use a <a href="linkme">TeX Yoda</a> or old IBM server keyboard with a high-res tablet&mdash;but I&rsquo;m concerned that it wouldn&rsquo;t be very lap friendly.</p>
-
-<!-- NB: not actually this one-->
-<div class="footnotes">
-
-<hr />
-
+<p>I use an old Thinkpad X220. It has a pretty low resolution display, so I use a bitmap font, the excellent <a href="https://www.donationcoder.com/Software/Jibz/Dina/">Dina</a>, for sharpness<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup>. If anybody knows of a laptop that has a high resolution display, a pointing stick, and a scissor-switch keyboard, please let me know. My current long-term plan for when the X220 dies (and purchasing more on eBay becomes impractical) is to use a <a href="linkme">TeX Yoda</a> or old IBM server keyboard with a high-res tablet&mdash;but I'm concerned that it wouldn't be very lap friendly.</p>
+<!-- raw HTML omitted -->
+<section class="footnotes" role="doc-endnotes">
+<hr>
 <ol>
-<li id="fn:HiDPI-bitmaps">If anyone has any recommendations for bitmap fonts to use on HiDPI displays, I&rsquo;m all ears. I&rsquo;ve heard good things about <a href="https://github.com/rbanffy/3270font">x3270</a> but haven&rsquo;t got around to trying it yet. I&rsquo;m currently trying out <a href="https://github.com/be5invis/Iosevka/releases">Iosevka</a>, in the hope that I can get the ligatures to work; Fira Code has nicer ligatures but I can&rsquo;t get along with the rest of it. I&rsquo;m not yet convinced about the density of Iosevka. <!-- Todo: try out Iosevka in mlterm... hyper.js? eugh; consider going back to consolas?--> I might try peep out. Iosevka: need to use &ldquo;default&rdquo; character variants; the consolas style one has a funny @ sign.
- <a class="footnote-return" href="#fnref:HiDPI-bitmaps"><sup>[return]</sup></a></li>
+<li id="fn:1" role="doc-endnote">
+<p>If anyone has any recommendations for bitmap fonts to use on HiDPI displays, I'm all ears. I've heard good things about <a href="https://github.com/rbanffy/3270font">x3270</a> but haven't got around to trying it yet. I'm currently trying out <a href="https://github.com/be5invis/Iosevka/releases">Iosevka</a>, in the hope that I can get the ligatures to work; Fira Code has nicer ligatures but I can't get along with the rest of it. I'm not yet convinced about the density of Iosevka. <!-- raw HTML omitted --> I might try peep out. Iosevka: need to use &ldquo;default&rdquo; character variants; the consolas style one has a funny @ sign. <a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
 </ol>
-</div>
+</section>
     </div>
     
   </div>

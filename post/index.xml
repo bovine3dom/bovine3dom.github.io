@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Posts on Oliver Blanthorn</title>
@@ -18,7 +18,7 @@
       <pubDate>Tue, 02 Jul 2019 17:00:00 +0100</pubDate>
       
       <guid>https://o.blanthorn.com/blog/2019/07/02/the-tridactyl-keypress-security-bug/</guid>
-      <description>&lt;p&gt;What follows is a wordier write-up of Tridactyl&amp;rsquo;s first real brush with (in)security from my personal perspective. If you&amp;rsquo;re purely interested in the mitigations, head to the &lt;a href=&#34;https:///github.com/tridactyl/tridactyl&#34;&gt;GitHub repository&lt;/a&gt;&amp;mdash;or just update Tridactyl to version 1.16.1 or 1.14.13 by going to &lt;code&gt;about:addons&lt;/code&gt; in Firefox, right-clicking Tridactyl&amp;rsquo;s listing, and clicking &amp;ldquo;Find Updates&amp;rdquo;. Once it has downloaded (it will look like it&amp;rsquo;s hanging&amp;mdash;it isn&amp;rsquo;t), restart Firefox and you&amp;rsquo;re done. At the time of writing, &lt;a href=&#34;https://addons.mozilla.org/en-US/firefox/addon/tridactyl-vim/statistics/usage/versions/?last=30&#34;&gt;about 60% of users have a patched version&lt;/a&gt;. &lt;!-- make this point to the corresponding issue --&gt;&lt;/p&gt;</description>
+      <description>&lt;p&gt;What follows is a wordier write-up of Tridactyl&#39;s first real brush with (in)security from my personal perspective. If you&#39;re purely interested in the mitigations, head to the &lt;a href=&#34;https:///github.com/tridactyl/tridactyl&#34;&gt;GitHub repository&lt;/a&gt;&amp;mdash;or just update Tridactyl to version 1.16.1 or 1.14.13 by going to &lt;code&gt;about:addons&lt;/code&gt; in Firefox, right-clicking Tridactyl&#39;s listing, and clicking &amp;ldquo;Find Updates&amp;rdquo;. Once it has downloaded (it will look like it&#39;s hanging&amp;mdash;it isn&#39;t), restart Firefox and you&#39;re done. At the time of writing, &lt;a href=&#34;https://addons.mozilla.org/en-US/firefox/addon/tridactyl-vim/statistics/usage/versions/?last=30&#34;&gt;about 60% of users have a patched version&lt;/a&gt;. &lt;!-- raw HTML omitted --&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -28,8 +28,7 @@
       
       <guid>https://o.blanthorn.com/blog/2018/09/11/remotely-working/</guid>
       <description>&lt;p&gt;I really love the freedom that remote working gives me. I can work whenever and wherever the feeling takes me.&lt;/p&gt;
-
-&lt;p&gt;However, I often need to run complex simulations that take a lot of grunt. I don&amp;rsquo;t want to lug a heavy laptop around with me all day, so my desk at work is usefully employed to provide a desktop computer.&lt;/p&gt;</description>
+&lt;p&gt;However, I often need to run complex simulations that take a lot of grunt. I don&#39;t want to lug a heavy laptop around with me all day, so my desk at work is usefully employed to provide a desktop computer.&lt;/p&gt;</description>
     </item>
     
   </channel>

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Oliver Blanthorn</title>
@@ -7,10 +7,20 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-GB</language>
     <copyright>&lt;img class=&#34;logo-manchester&#34; src=&#34;https://o.blanthorn.com/images/TAB_black.svg&#34; style=&#34;height:4rem&#34;&gt; &lt;br&gt; Made using &lt;a href=&#34;https://github.com/bovine3dom/hucore.git&#34; target=&#34;_blank&#34;&gt;Hucore theme&lt;/a&gt; &amp; &lt;a href=&#34;http://gohugo.io&#34; target=&#34;_blank&#34;&gt;Hugo&lt;/a&gt; </copyright>
-    <lastBuildDate>Tue, 02 Jul 2019 17:00:00 +0100</lastBuildDate>
+    <lastBuildDate>Wed, 08 Jan 2020 17:12:15 +0000</lastBuildDate>
     
 	<atom:link href="https://o.blanthorn.com/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>About me</title>
+      <link>https://o.blanthorn.com/about/</link>
+      <pubDate>Wed, 08 Jan 2020 17:12:15 +0000</pubDate>
+      
+      <guid>https://o.blanthorn.com/about/</guid>
+      <description>&lt;h1 id=&#34;hi&#34;&gt;Hi!&lt;/h1&gt;
+&lt;p&gt;I&#39;m a &lt;a href=&#34;https://www.smbc-comics.com/comic/2012-03-21&#34;&gt;recovering physicist&lt;/a&gt;. I&#39;ve researched patterns of academic collaboration, changes in the English language, computer-aided mammography, differences in software dependency networks and similarities between food webs, patterns of communication between suffragettes and air-traffic networks. I&#39;m now most widely known for &lt;a href=&#34;https://github.com/tridactyl/tridactyl&#34;&gt;Tridactyl&lt;/a&gt;, an incredibly niche extension for the Firefox web browser and &lt;a href=&#34;https://steamcommunity.com/sharedfiles/filedetails/?id=1883956552&#34;&gt;Interiors for CUP&lt;/a&gt;, a modification for a modification for ArmA, a military simulation game.&lt;/p&gt;</description>
+    </item>
     
     <item>
       <title>The Tridactyl Keypress Security Bug</title>
@@ -18,7 +28,7 @@
       <pubDate>Tue, 02 Jul 2019 17:00:00 +0100</pubDate>
       
       <guid>https://o.blanthorn.com/blog/2019/07/02/the-tridactyl-keypress-security-bug/</guid>
-      <description>&lt;p&gt;What follows is a wordier write-up of Tridactyl&amp;rsquo;s first real brush with (in)security from my personal perspective. If you&amp;rsquo;re purely interested in the mitigations, head to the &lt;a href=&#34;https:///github.com/tridactyl/tridactyl&#34;&gt;GitHub repository&lt;/a&gt;&amp;mdash;or just update Tridactyl to version 1.16.1 or 1.14.13 by going to &lt;code&gt;about:addons&lt;/code&gt; in Firefox, right-clicking Tridactyl&amp;rsquo;s listing, and clicking &amp;ldquo;Find Updates&amp;rdquo;. Once it has downloaded (it will look like it&amp;rsquo;s hanging&amp;mdash;it isn&amp;rsquo;t), restart Firefox and you&amp;rsquo;re done. At the time of writing, &lt;a href=&#34;https://addons.mozilla.org/en-US/firefox/addon/tridactyl-vim/statistics/usage/versions/?last=30&#34;&gt;about 60% of users have a patched version&lt;/a&gt;. &lt;!-- make this point to the corresponding issue --&gt;&lt;/p&gt;</description>
+      <description>&lt;p&gt;What follows is a wordier write-up of Tridactyl&#39;s first real brush with (in)security from my personal perspective. If you&#39;re purely interested in the mitigations, head to the &lt;a href=&#34;https:///github.com/tridactyl/tridactyl&#34;&gt;GitHub repository&lt;/a&gt;&amp;mdash;or just update Tridactyl to version 1.16.1 or 1.14.13 by going to &lt;code&gt;about:addons&lt;/code&gt; in Firefox, right-clicking Tridactyl&#39;s listing, and clicking &amp;ldquo;Find Updates&amp;rdquo;. Once it has downloaded (it will look like it&#39;s hanging&amp;mdash;it isn&#39;t), restart Firefox and you&#39;re done. At the time of writing, &lt;a href=&#34;https://addons.mozilla.org/en-US/firefox/addon/tridactyl-vim/statistics/usage/versions/?last=30&#34;&gt;about 60% of users have a patched version&lt;/a&gt;. &lt;!-- raw HTML omitted --&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -28,21 +38,7 @@
       
       <guid>https://o.blanthorn.com/blog/2018/09/11/remotely-working/</guid>
       <description>&lt;p&gt;I really love the freedom that remote working gives me. I can work whenever and wherever the feeling takes me.&lt;/p&gt;
-
-&lt;p&gt;However, I often need to run complex simulations that take a lot of grunt. I don&amp;rsquo;t want to lug a heavy laptop around with me all day, so my desk at work is usefully employed to provide a desktop computer.&lt;/p&gt;</description>
-    </item>
-    
-    <item>
-      <title>About</title>
-      <link>https://o.blanthorn.com/about/</link>
-      <pubDate>Fri, 07 Jul 2017 17:12:15 +0100</pubDate>
-      
-      <guid>https://o.blanthorn.com/about/</guid>
-      <description>&lt;h1 id=&#34;hi&#34;&gt;Hi!&lt;/h1&gt;
-
-&lt;p&gt;I&amp;rsquo;m a Postgraduate Researcher at the University of Manchester working with complex networks. My supervisor, Dr Eva Navarro-López&lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:Eva&#34;&gt;&lt;a href=&#34;#fn:Eva&#34;&gt;1&lt;/a&gt;&lt;/sup&gt;, and I are investigating the topology of complex networks.&lt;/p&gt;
-
-&lt;p&gt;I am at the School of Computer Science Centre for Doctoral Training. I previously studied Theoretical Physics in the School of Physics and Astronomy, also at the University of Manchester. As part of that degree I worked with Ksenia Grozdova under Sue Astley on a project on measuring mammographic density using computer vision techniques.&lt;/p&gt;</description>
+&lt;p&gt;However, I often need to run complex simulations that take a lot of grunt. I don&#39;t want to lug a heavy laptop around with me all day, so my desk at work is usefully employed to provide a desktop computer.&lt;/p&gt;</description>
     </item>
     
   </channel>
